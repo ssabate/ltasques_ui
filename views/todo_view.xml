@@ -10,10 +10,26 @@
                     res_model="todo.task.stage"
                     src_model="todo.task"
                     multi="False"/>
-        <menuitem id="menu_todo_task_stage"
-                  name="To-Do Stages"
-                  sequence="20"
+        <act_window id="llista_tasques_social.action_todo_task_social"
+                    name=" To-Do Tasks"
+                    res_model="todo.task"
+                    view_mode="tree,form,gantt,graph"
+                    target="current"
+                    context="{'default_user_id': uid}"
+                    domain="[]"
+                    limit="80"/>
+
+
+        <menuitem id="menu_todo_task_ui" sequence="20" name="Tasques UI"/>
+            <menuitem id="section_menu_todo_task_ui" parent="menu_todo_task_ui"/>
+                <menuitem action="llista_tasques_social.action_todo_task_social"
+                  id="menu_todo_task_ui_1" parent="menu_todo_task_ui" sequence="25" name="Tasques per fer"/>
+                <menuitem id="menu_todo_task_stage"
+                  name="Etapes de les tasques"
+                  sequence="25"
+                  parent="menu_todo_task_ui"
                   action="action_todo_stage"/>
+
         <record id="view_form_todo_task_ui" model="ir.ui.view">
             <field name="name">view_form_todo_task_ui</field>
             <field name="model">todo.task</field>
