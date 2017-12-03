@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ltasques_ui_ltasques_ui,ltasques_ui.ltasques_ui,model_ltasques_ui_ltasques_ui,,1,0,0,0
+access_todo_task,access_todo_task,model_todo_task,,1,1,1,1
+access_todo_task_tag,access_todo_task_tag,model_todo_task_tag,,1,1,1,1
+access_todo_task_stage,access_todo_task_stage,model_todo_task_stage,,1,1,1,1
