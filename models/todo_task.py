@@ -36,7 +36,33 @@ class Stage(models.Model):
         'Tasks in this stage')
 
 class TodoTask(models.Model):
-    _inherit = 'todo.task'
+
+    _name = 'todo.task'
+    _inherit = ['mail.thread']
+    user_id = fields.Many2one('res.users','Responsable')
+    date_deadline = fields.Date('Data caducitat')
+    name = fields.Char(help="Què s'ha de fer?")
+    isDone = fields.Boolean('Feta?')
+    isActive = fields.Boolean('Activa?', default=True)
+
+    @api.multi
+    def do_clear_done(self):
+        domain = [('isDone', '=', True),
+                  '|', ('user_id', '=', self.env.uid),
+                  ('user_id', '=', False)]
+
+        done_recs = self.search(domain)
+        done_recs.write({'isActive': False})
+        return True
+
+    @api.one
+    def do_toggle_done(self):
+        if self.user_id != self.env.user:
+            raise Exception('Only the responsible can do this!')
+        else:
+            return super(TodoTask, self).do_toggle_done()
+
+
     stage_id = fields.Many2one('todo.task.stage', 'Estat')
     tag_ids = fields.Many2many('todo.task.tag', string='Tags')
     stage_fold = fields.Boolean(
@@ -49,3 +75,14 @@ class TodoTask(models.Model):
     @api.depends('stage_id.fold')
     def _compute_stage_fold(self):
         self.stage_fold = self.stage_id.fold
+
+    @api.one
+    def compute_user_todo_count(self):
+        self.user_todo_count = self.search_count(
+                [('user_id', '=', self.user_id.id)])
+
+    user_todo_count = fields.Integer(
+            'User To-Do Count',
+            compute='compute_user_todo_count')
+
+    effort_estimate = fields.Integer('Esforç estimat')

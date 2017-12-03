@@ -20,7 +20,9 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','llista_tasques_social','mail'],
+    'depends': ['base',
+                #'llista_tasques_social',
+                'mail'],
 
     # always loaded
     'data': [
